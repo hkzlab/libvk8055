@@ -13,8 +13,15 @@
 #define DIGITAL_IN_INP4(d) ((d & 0x40) >> 6)
 #define DIGITAL_IN_INP5(d) ((d & 0x80) >> 7)
 
-#define ENABLE_DIGITAL_OUT(d, a) (d | (1 << a))
+#define ENABLE_DO_PORT(d, a) (d | (1 << a)) // Enable digital out port 'a'
 
+#ifndef BIG_ENDIAN_MACHINE
+#define COUNTER1(dp) ((unsigned short)((dp)->data[5] << 8 | (dp)->data[4]))
+#define COUNTER2(dp) ((unsigned short)((dp)->data[7] << 8 | (dp)->data[6]))
+#else
+#define COUNTER1(dp) ((unsigned short)((dp)->data[4] << 8 | (dp)->data[5]))
+#define COUNTER2(dp) ((unsigned short)((dp)->data[6] << 8 | (dp)->data[7]))
+#endif
 
 typedef struct {
 	unsigned char data[8];
@@ -31,8 +38,8 @@ typedef enum {
 	CMD_RESET = 0x00,    // Reset board ?
 	CMD_SET_CNT1 = 0x01, // Set debounce counter 1
 	CMD_SET_CNT2 = 0x02, // Set debounce counter 2
-	CMD_RST_CNT1 = 0x03, // Reset debounce counter 1
-	CMD_RST_CNT2 = 0x04, // Reset debounce counter 2
+	CMD_RST_CNT1 = 0x03, // Reset counter 1
+	CMD_RST_CNT2 = 0x04, // Reset counter 2
 	CMD_SET_AD = 0x05    // Set analog/digital outputs
 } board_cmd;
 

@@ -29,17 +29,25 @@ int main(void) {
 
 	k8055_data_packet datap;
 
+	prepare_k8055_command(board, &datap, CMD_RST_CNT1, 0, 0, 0);
+	exec_k8055_command(board, &datap);
+	prepare_k8055_command(board, &datap, CMD_RST_CNT2, 0, 0, 0);
+	exec_k8055_command(board, &datap);
+	prepare_k8055_command(board, &datap, CMD_SET_CNT1, 3, 0, 0);
+	exec_k8055_command(board, &datap);
+	prepare_k8055_command(board, &datap, CMD_SET_CNT2, 5, 0, 0);
+	exec_k8055_command(board, &datap);
+
 	Uint16 runs = 0xFFFF/4;
 	Uint8 dinp;
 	while (runs--) {
 		if (read_k8055_status(board, &datap) < 0) break;
 		dinp = DIGITAL_IN(&datap); 
 
-		fprintf(stdout, "\rK8055: [%.5u] DIGITAL %u %u %u %u %u - ANALOG %.3u %.3u", runs, DIGITAL_IN_INP1(dinp), DIGITAL_IN_INP2(dinp), DIGITAL_IN_INP3(dinp), DIGITAL_IN_INP4(dinp), DIGITAL_IN_INP5(dinp), ANALOG_IN1(&datap), ANALOG_IN2(&datap));
+		fprintf(stdout, "\rK8055: [%.5u] DIGITAL %u %u %u %u %u - ANALOG %.3u %.3u - COUNTERS %.4X %.4X", runs, DIGITAL_IN_INP1(dinp), DIGITAL_IN_INP2(dinp), DIGITAL_IN_INP3(dinp), DIGITAL_IN_INP4(dinp), DIGITAL_IN_INP5(dinp), ANALOG_IN1(&datap), ANALOG_IN2(&datap), COUNTER1(&datap), COUNTER2(&datap));
 		fflush(stdout);
 	}
 
-	memset(&datap, 0, sizeof(k8055_data_packet));
 	prepare_k8055_command(board, &datap, CMD_RESET, 0, 0, 0);
 	exec_k8055_command(board, &datap);
 

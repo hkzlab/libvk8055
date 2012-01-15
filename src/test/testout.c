@@ -41,7 +41,7 @@ int main(void) {
 	Uint8 anout = 0;
 
 	while (runs--) {
-		prepare_k8055_command(board, &datap, CMD_SET_AD, ENABLE_DIGITAL_OUT(0, digit_out), anout, 255 - anout);
+		prepare_k8055_command(board, &datap, CMD_SET_AD, ENABLE_DO_PORT(0, digit_out), anout, 255 - anout);
 		if (exec_k8055_command(board, &datap) < 0) break;
 
 		fprintf(stdout, "\rK8055: [%.4u] DO 0x%.2X - AO1 0x%.2X - AO2 0x%.2X", runs, datap.data[1], datap.data[2], datap.data[3]);
@@ -67,7 +67,6 @@ int main(void) {
 		nanosleep(&wait, NULL);
 	}
 
-	memset(&datap, 0, sizeof(k8055_data_packet));
 	prepare_k8055_command(board, &datap, CMD_RESET, 0, 0, 0);
 	exec_k8055_command(board, &datap);
 

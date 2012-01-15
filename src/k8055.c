@@ -90,7 +90,7 @@ void prepare_k8055_command(usb_dev_handle *dev, k8055_data_packet *dp, board_cmd
 			dp->data[6] = in1;
 			break;
 		case CMD_SET_CNT2:
-			dp->data[6] = in2;
+			dp->data[7] = in1;
 			break;
 		case CMD_RST_CNT1:
 			dp->data[4] = 0x00;
