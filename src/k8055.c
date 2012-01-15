@@ -113,7 +113,7 @@ void prepare_k8055_command(usb_dev_handle *dev, k8055_data_packet *dp, board_cmd
 
 }
 
-// Debounce conversion formula took from libk8055
+// Debounce conversion formula took from libk8055 by Sven Lindberg! Thanks!
 unsigned char k8055_get_debounce_value(unsigned int debounce_time) {
 		if (debounce_time > MAX_DEBOUNCE_TIME) debounce_time = MAX_DEBOUNCE_TIME;
 		return (unsigned char)roundf(sqrtf(debounce_time/0.115f));
