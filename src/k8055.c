@@ -23,11 +23,11 @@ int claim_usb_device(usb_dev_handle *dev, int interface) {
 	assert(dev);
 
 	if (usb_detach_kernel_driver_np(dev, interface) < 0)
-		fprintf(stderr, "Can't detach USB device from OS driver: %s\n", usb_strerror());
+		fprintf(stderr, "K8055: %s\n", usb_strerror());
 
 	usb_set_altinterface(dev, interface);
 	if (usb_claim_interface(dev, interface) < 0) {
-		fprintf(stderr, "Can't claim USB device: %s\n", usb_strerror());
+		fprintf(stderr, "K8055: %s\n", usb_strerror());
 		return -1;
 	}
 
