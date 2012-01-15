@@ -1,3 +1,4 @@
+Packet format taken from libk8055 (http://libk8055.sourceforge.net/)
 
 	Input packet format
 
