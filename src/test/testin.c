@@ -38,9 +38,9 @@ int main(void) {
 	exec_k8055_command(board, &datap);
 	prepare_k8055_command(board, &datap, CMD_RST_CNT2, 0, 0, 0);
 	exec_k8055_command(board, &datap);
-	prepare_k8055_command(board, &datap, CMD_SET_CNT1, k8055_get_debounce_value(300), 0, 0);
+	prepare_k8055_command(board, &datap, CMD_SET_CNT1, k8055_get_debounce_value(0), 0, 0);
 	exec_k8055_command(board, &datap);
-	prepare_k8055_command(board, &datap, CMD_SET_CNT2, k8055_get_debounce_value(1000), 0, 0);
+	prepare_k8055_command(board, &datap, CMD_SET_CNT2, k8055_get_debounce_value(300), 0, 0);
 	exec_k8055_command(board, &datap);
 
 	Uint16 runs = 0xFFFF/4;
