@@ -29,12 +29,24 @@ int main(void) {
 	if(!board) return -1;
 
 	k8055_data_packet datap;
-	memset(&datap, 0, sizeof(k8055_data_packet));
 
 	struct timespec wait;
-
 	wait.tv_sec = 0;
 	wait.tv_nsec = 50000000;
+
+	// Reset the board
+	prepare_k8055_command(board, &datap, CMD_SET_AD, 0, 0, 0);
+	exec_k8055_command(board, &datap);
+
+	// Reset counters
+	prepare_k8055_command(board, &datap, CMD_RST_CNT1, 0, 0, 0);
+	exec_k8055_command(board, &datap);
+	prepare_k8055_command(board, &datap, CMD_RST_CNT2, 0, 0, 0);
+	exec_k8055_command(board, &datap);
+	prepare_k8055_command(board, &datap, CMD_SET_CNT1, 3, 0, 0);
+	exec_k8055_command(board, &datap);
+	prepare_k8055_command(board, &datap, CMD_SET_CNT2, 5, 0, 0);
+	exec_k8055_command(board, &datap);
 
 	Uint16 runs = 1024;
 	Sint8 digit_out = 0, direction_dig = 0, direction_an = 0;
@@ -53,11 +65,11 @@ int main(void) {
 			digit_out--;
 
 		if (!direction_an)
-			anout++;
+			anout+=2;
 		else
-			anout--;
+			anout-=2;
 
-		if (anout == 255 || anout == 0) 
+		if (anout == 254 || anout == 0) // 254 instead of 255 so we can avoid other checks
 			direction_an = !direction_an;
 
 		if (digit_out == 7 || digit_out == 0) {
@@ -67,7 +79,8 @@ int main(void) {
 		nanosleep(&wait, NULL);
 	}
 
-	prepare_k8055_command(board, &datap, CMD_RESET, 0, 0, 0);
+	// Reset the board
+	prepare_k8055_command(board, &datap, CMD_SET_AD, 0, 0, 0);
 	exec_k8055_command(board, &datap);
 
 	usb_close(board);

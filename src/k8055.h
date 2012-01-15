@@ -27,16 +27,18 @@ typedef struct {
 	unsigned char data[8];
 } k8055_data_packet;
 
+#define K8055_BASE_ADDR 0x5500
+
 typedef enum {
-	BOARD_ADDR_0 = 0x5500,
-	BOARD_ADDR_1 = 0x5501,
-	BOARD_ADDR_2 = 0x5502,
-	BOARD_ADDR_3 = 0x5503
+	BOARD_ADDR_0 = K8055_BASE_ADDR + 0,
+	BOARD_ADDR_1 = K8055_BASE_ADDR + 1,
+	BOARD_ADDR_2 = K8055_BASE_ADDR + 2,
+	BOARD_ADDR_3 = K8055_BASE_ADDR + 3
 } board_id;
 
 typedef enum {
-	CMD_RESET = 0x00,    // Reset board ?
-	CMD_SET_CNT1 = 0x01, // Set debounce counter 1
+	CMD_RESET = 0x00,    // Reset ?
+	CMD_SET_CNT1 = 0x01, // Set debounce counter 1 (debouncing removes small "ripples" that are formed by pushing mechanical switches. It avoids detecting "ticks" when they're too near)
 	CMD_SET_CNT2 = 0x02, // Set debounce counter 2
 	CMD_RST_CNT1 = 0x03, // Reset counter 1
 	CMD_RST_CNT2 = 0x04, // Reset counter 2
@@ -56,5 +58,6 @@ usb_dev_handle *get_k8055_board_handle(board_id id); // The returning value must
 void prepare_k8055_command(usb_dev_handle *dev, k8055_data_packet *dp, board_cmd cmd, unsigned char in1, unsigned char in2, unsigned char in3);
 int read_k8055_status(usb_dev_handle *dev, k8055_data_packet *dp);
 int exec_k8055_command(usb_dev_handle *dev, k8055_data_packet *dp);
+unsigned char k8055_get_debounce_value(unsigned int debounce_time);
 
 #endif /* _K8055_HEADER_ */

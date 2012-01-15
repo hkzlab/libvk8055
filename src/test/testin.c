@@ -29,13 +29,18 @@ int main(void) {
 
 	k8055_data_packet datap;
 
+	// Reset the board
+	prepare_k8055_command(board, &datap, CMD_SET_AD, 0, 0, 0);
+	exec_k8055_command(board, &datap);
+
+	// Reset counters
 	prepare_k8055_command(board, &datap, CMD_RST_CNT1, 0, 0, 0);
 	exec_k8055_command(board, &datap);
 	prepare_k8055_command(board, &datap, CMD_RST_CNT2, 0, 0, 0);
 	exec_k8055_command(board, &datap);
-	prepare_k8055_command(board, &datap, CMD_SET_CNT1, 3, 0, 0);
+	prepare_k8055_command(board, &datap, CMD_SET_CNT1, k8055_get_debounce_value(300), 0, 0);
 	exec_k8055_command(board, &datap);
-	prepare_k8055_command(board, &datap, CMD_SET_CNT2, 5, 0, 0);
+	prepare_k8055_command(board, &datap, CMD_SET_CNT2, k8055_get_debounce_value(1000), 0, 0);
 	exec_k8055_command(board, &datap);
 
 	Uint16 runs = 0xFFFF/4;
@@ -48,7 +53,8 @@ int main(void) {
 		fflush(stdout);
 	}
 
-	prepare_k8055_command(board, &datap, CMD_RESET, 0, 0, 0);
+	// Reset the board
+	prepare_k8055_command(board, &datap, CMD_SET_AD, 0, 0, 0);
 	exec_k8055_command(board, &datap);
 
 	usb_close(board);

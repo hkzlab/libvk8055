@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #define BOARD_VENDOR 0x10CF // K8055 board vendor id
 
@@ -11,6 +12,8 @@
 
 #define READ_ENDPOINT 0x81 // USB Output endpoint
 #define WRITE_ENDPOINT 0x01 // USB Input endpoint
+
+#define MAX_DEBOUNCE_TIME 7450
 
 int claim_usb_device(usb_dev_handle *dev, int interface);
 
@@ -108,5 +111,11 @@ void prepare_k8055_command(usb_dev_handle *dev, k8055_data_packet *dp, board_cmd
 			break;
 	}
 
+}
+
+// Debounce conversion formula took from libk8055
+unsigned char k8055_get_debounce_value(unsigned int debounce_time) {
+		if (debounce_time > MAX_DEBOUNCE_TIME) debounce_time = MAX_DEBOUNCE_TIME;
+		return (unsigned char)roundf(sqrtf(debounce_time/0.115f));
 }
 
