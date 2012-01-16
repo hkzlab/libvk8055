@@ -4,7 +4,7 @@ LIBDIR=lib
 CC=gcc
 
 CFLAGS=-O2 -I$(SRCDIR) -g -std=c99 -Wall
-LDFLAGS=-lusb -lm
+LDFLAGS=-lusb
 
 all: $(LIBDIR)/libvk8055.so test-software
 
