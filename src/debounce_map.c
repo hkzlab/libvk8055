@@ -1,6 +1,6 @@
 
 #define DEBOUNCE_MAP_LENGTH 256
-static Uint16 debounce_map[] = {
+static const Uint16 debounce_map[] = {
 	0,
 	1,
 	2,

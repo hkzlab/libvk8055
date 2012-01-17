@@ -20,7 +20,7 @@ $(LIBDIR)/libvk8055.so: $(BINDIR)/k8055.o
 	$(CC) -shared -Wl,-soname,libvk8055.so -o $(LIBDIR)/libvk8055.so $(BINDIR)/k8055.o
 	strip $(LIBDIR)/libvk8055.so
 
-$(BINDIR)/k8055.o: $(SRCDIR)/k8055.c
+$(BINDIR)/k8055.o: $(SRCDIR)/k8055.c $(SRCDIR)/debounce_map.c
 	$(CC) $(CFLAGS) -fPIC -c $(SRCDIR)/k8055.c -o $(BINDIR)/k8055.o
 
 clean:
